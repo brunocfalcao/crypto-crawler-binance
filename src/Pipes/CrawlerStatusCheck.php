@@ -27,11 +27,13 @@ class CrawlerStatusCheck
 
         // Crawler exists?
         if (! $crawler) {
+            throw new \Exception('Crawler binance not loaded!');
             return false;
         }
 
         // Crawler is live?
         if (! $crawler->is_live) {
+            throw new \Exception('Crawler ' . $crawler . ' is not live!');
             return false;
         }
 

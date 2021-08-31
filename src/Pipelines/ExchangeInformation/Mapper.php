@@ -3,6 +3,7 @@
 namespace Nidavellir\Crawler\Binance\Pipelines\ExchangeInformation;
 
 use Closure;
+use Nidavellir\CryptoCube\Models\Symbol;
 
 /**
  * Maps the respective symbols data into the database (creates or updates).
@@ -23,7 +24,19 @@ class Mapper
 
     public function handle($data, Closure $next)
     {
-        dd('here', $data->response->json());
+        $symbols = $data->response->json()['symbols'];
+
+        foreach ($symbols as $symbol) {
+            $symbol = (object) $symbol;
+
+            if (! Symbol::firstWhere('canonical', $symbol->symbol)) {
+                $model = new Symbol();
+                $model->canonical = strtoupper($symbol->symbol);
+                $model->base_asset = $symbol->baseAsset;
+                $model->quote_asset = $symbol->quoteAsset;
+                $model->save();
+            }
+        }
 
         return $next($data);
     }

@@ -14,6 +14,7 @@ class ExchangeInformation
     public function __invoke()
     {
         return [
+            CanonicalExists::class,
             CrawlerStatusCheck::class,
             Url::class,
             Poll::class,
