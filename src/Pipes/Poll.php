@@ -4,6 +4,7 @@ namespace Nidavellir\Crawler\Binance\Pipes;
 
 use Closure;
 use Illuminate\Support\Facades\Http;
+use Nidavellir\Crawler\Binance\BinanceCrawler;
 
 /**
  * Fetches an URL.
@@ -27,16 +28,18 @@ class Poll
 
     public function handle($data, Closure $next)
     {
-        $method = $data->method ?? 'get';
+        $data->method = $this->parameters ? 'post' : 'get';
+
         $http = new Http();
 
         $data->headers = array_merge(
             $data->headers ?? [],
-            ['X-MBX-APIKEY' => env('CRYPTO_CRAWLER_API')]
+            BinanceCrawler::headers()
         );
 
         $prefix = 'https://api'.rand(1, 3).'.binance.com/api/v3/';
         $response = $http::withHeaders($data->headers)
+                         ->withOptions(BinanceCrawler::options())
                          ->{strtolower($method)}(
                              $prefix.$data->url,
                              $data->parameters ?? []

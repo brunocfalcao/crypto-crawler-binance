@@ -2,8 +2,6 @@
 
 namespace Nidavellir\Crawler\Binance;
 
-use Illuminate\Support\Facades\Http;
-
 class BinanceCrawler
 {
     public static function __callStatic($method, $args)
@@ -17,7 +15,6 @@ class BinanceCrawlerService
     protected $data = [];
     protected $pipeline = null;
     protected $response = null;
-    protected $error = null;
 
     public function __construct()
     {
@@ -30,12 +27,28 @@ class BinanceCrawlerService
     }
 
     /**
+     * Gets data from the data attribute using the path.
+     *
+     * @param string $path
+     *
+     * @return $mixed
+     */
+    public function get(string $path)
+    {
+        return data_get($this->data, $path);
+
+        return $this;
+    }
+
+    /**
      * Sets a data path attribute in the $this->data attribute.
      * Uses the data_set() helper, so you can make like
      * $this->set('name.surname', 'Falcao');.
      *
      * @param string $path
      * @param mixed $value
+     *
+     * @return \Nidavellir\CryptoCrawler\CryptoCrawlerService
      */
     public function set(string $path, $value)
     {
@@ -64,6 +77,28 @@ class BinanceCrawlerService
             ->send($this->data())
             ->through((new $this->pipeline())())
             ->thenReturn();
+    }
+
+    /**
+     * Returns the default CURL headers for this crawler.
+     * If not headers are to be sent, should return an empty array.
+     *
+     * @return array
+     */
+    public function headers()
+    {
+        return ['X-MBX-APIKEY' => env('CRYPTO_CRAWLER_API')];
+    }
+
+    /**
+     * Returns the default CURL options for this crawler.
+     * If not headers are to be sent, should return an empty array.
+     *
+     * @return array
+     */
+    public function options()
+    {
+        return [CURLOPT_SSL_VERIFYPEER => false];
     }
 
     /**

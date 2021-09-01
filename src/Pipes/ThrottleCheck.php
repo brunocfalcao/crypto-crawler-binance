@@ -3,6 +3,7 @@
 namespace Nidavellir\Crawler\Binance\Pipes;
 
 use Closure;
+use Nidavellir\Crawler\Binance\BinanceCrawler;
 
 /**
  * Verifies the response from binance to see if we can make a next
@@ -34,6 +35,8 @@ class ThrottleCheck
             // Cool down crawler.
             if (response->header('Retry-After') !== null) {
                 $retryAfter = now()->addSeconds($response->header('Retry-After'));
+                BinanceCrawler::firstWhere('canonical', 'binance')
+                              ->update(['cooldown_until', $retryAfter]);
             }
 
             return;
