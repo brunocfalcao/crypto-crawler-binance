@@ -30,25 +30,17 @@ class Poll
         $method = $data->method ?? 'get';
         $http = new Http();
 
-        if (isset($data->headers)) {
-            $http::withHeaders($data->headers);
-        }
-
-        $querystring = '';
-
-        if (isset($data->parameters)) {
-            foreach ($data->parameters as $key => $value) {
-                $querystring .= "{$key}=".urlencode($value).'&';
-            }
-        }
-
-        // Remove last &.
-        if (! empty($querystring)) {
-            $querystring = '?'.substr($querystring, 0, -1);
-        }
+        $data->headers = array_merge(
+            $data->headers ?? [],
+            ['X-MBX-APIKEY' => env('CRYPTO_CRAWLER_API')]
+        );
 
         $prefix = 'https://api'.rand(1, 3).'.binance.com/api/v3/';
-        $response = $http::{strtolower($method)}($prefix.$data->url.$querystring);
+        $response = $http::withHeaders($data->headers)
+                         ->{strtolower($method)}(
+                             $prefix.$data->url,
+                             $data->parameters ?? []
+                         );
 
         data_set($data, 'response', $response);
 

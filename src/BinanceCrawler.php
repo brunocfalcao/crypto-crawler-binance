@@ -75,18 +75,4 @@ class BinanceCrawlerService
     {
         return (object) $this->data;
     }
-
-    public function status()
-    {
-        dd($this->poll('https://api3.binance.com/sapi/v1/system/sta2tus')->json());
-    }
-
-    public function poll(string $url, array $extraHeaders = [], string $type = 'get')
-    {
-        $response = Http::withHeaders(
-            ['X-MBX-APIKEY' => env('CRYPTO_CRAWLER_API')]
-        )->{$type}($url);
-
-        return $response->successful() ? $response : false;
-    }
 }

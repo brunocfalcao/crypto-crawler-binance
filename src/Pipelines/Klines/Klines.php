@@ -2,15 +2,14 @@
 
 namespace Nidavellir\Crawler\Binance\Pipelines\ExchangeInformation;
 
-use Nidavellir\Crawler\Binance\Pipes\CanonicalExists;
 use Nidavellir\Crawler\Binance\Pipes\CrawlerStatusCheck;
 use Nidavellir\Crawler\Binance\Pipes\Poll;
 use Nidavellir\Crawler\Binance\Pipes\ThrottleCheck;
 
 /**
- * Retrieves a crypto currency price data line.
+ * Retrieves candlestick data from a specific symbol, or all of them.
  */
-class ExchangeInformation
+class Klines
 {
     public function __invoke()
     {
