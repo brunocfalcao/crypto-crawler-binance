@@ -98,7 +98,12 @@ class BinanceCrawlerService
      */
     public function options()
     {
-        return [CURLOPT_SSL_VERIFYPEER => false];
+        return [CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => 5,
+            CURLOPT_ENCODING => '', ];
     }
 
     /**

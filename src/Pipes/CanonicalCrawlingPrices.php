@@ -6,7 +6,7 @@ use Closure;
 use Nidavellir\CryptoCube\Models\Symbol;
 
 /**
- * Check if the symbol canonical exists.
+ * Check if the symbol canonical is crawling prices.
  *
  * Needs:
  * (mandatory) $data->canonical: canonical
@@ -14,7 +14,7 @@ use Nidavellir\CryptoCube\Models\Symbol;
  * Adds:
  * nothing
  */
-class CanonicalExists
+class CanonicalCrawlingPrices
 {
     public function __construct()
     {
@@ -24,8 +24,8 @@ class CanonicalExists
     public function handle($data, Closure $next)
     {
         return
-            Symbol::firstWhere('canonical', $data->canonical) ?
+            Symbol::firstWhere('canonical', $data->canonical)->is_crawling_prices ?
             $next($data) :
-            throw new \Exception('Canonical does not exist');
+            throw new \Exception('Canonical is not crawling prices');
     }
 }

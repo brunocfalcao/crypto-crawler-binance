@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidavellir\Crawler\Binance\Pipelines\ExchangeInformation;
+namespace Nidavellir\Crawler\Binance\Pipelines\Klines;
 
 use Closure;
 

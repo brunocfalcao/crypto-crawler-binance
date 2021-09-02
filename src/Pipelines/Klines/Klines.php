@@ -1,7 +1,9 @@
 <?php
 
-namespace Nidavellir\Crawler\Binance\Pipelines\ExchangeInformation;
+namespace Nidavellir\Crawler\Binance\Pipelines\Klines;
 
+use Nidavellir\Crawler\Binance\Pipes\CanonicalCrawlingPrices;
+use Nidavellir\Crawler\Binance\Pipes\CanonicalExists;
 use Nidavellir\Crawler\Binance\Pipes\CrawlerStatusCheck;
 use Nidavellir\Crawler\Binance\Pipes\Poll;
 use Nidavellir\Crawler\Binance\Pipes\ThrottleCheck;
@@ -15,6 +17,7 @@ class Klines
     {
         return [
             CanonicalExists::class,
+            CanonicalCrawlingPrices::class,
             CrawlerStatusCheck::class,
             Url::class,
             Poll::class,

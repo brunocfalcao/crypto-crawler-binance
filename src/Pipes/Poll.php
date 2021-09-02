@@ -28,7 +28,7 @@ class Poll
 
     public function handle($data, Closure $next)
     {
-        $data->method = $this->parameters ? 'post' : 'get';
+        $data->method = isset($this->parameters) ? 'post' : 'get';
 
         $http = new Http();
 
@@ -38,9 +38,10 @@ class Poll
         );
 
         $prefix = 'https://api'.rand(1, 3).'.binance.com/api/v3/';
+
         $response = $http::withHeaders($data->headers)
                          ->withOptions(BinanceCrawler::options())
-                         ->{strtolower($method)}(
+                         ->{strtolower($data->method)}(
                              $prefix.$data->url,
                              $data->parameters ?? []
                          );
