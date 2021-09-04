@@ -41,6 +41,8 @@ class CrawlerStatusCheck
 
         // Cool down exists and it's in the future?
         if ($crawler->cooldown_until != null && $crawler->cooldown_until->greaterThan(now())) {
+            throw new \Exception('Crawler '.$crawler.' needs to cool down until '.$crawler->cooldown_until);
+
             return false;
         }
 

@@ -6,7 +6,7 @@ use Closure;
 use Nidavellir\CryptoCube\Models\Symbol;
 
 /**
- * Check if the symbol canonical exists.
+ * Check if the token canonical exists.
  *
  * Needs:
  * (mandatory) $data->canonical: canonical

@@ -6,7 +6,7 @@ use Closure;
 use Nidavellir\CryptoCube\Models\Symbol;
 
 /**
- * Check if the symbol canonical is crawling prices.
+ * Check if the token canonical is crawling prices.
  *
  * Needs:
  * (mandatory) $data->canonical: canonical

@@ -3,16 +3,16 @@
 namespace Nidavellir\Crawler\Binance\Pipelines\ExchangeInformation;
 
 use Closure;
-use Nidavellir\CryptoCube\Models\Symbol;
+use Nidavellir\CryptoCube\Models\Token;
 
 /**
- * Maps the respective symbols data into the database (creates or updates).
+ * Maps the respective tokens data into the database (creates or updates).
  *
  * Needs:
  * (mandatory) $data->response: Illuminate\Http\Client\Response (array)
  *
  * Adds:
- * $data->symbols: The returned symbols, now as model instances, from the
+ * $data->tokens: The returned tokens, now as model instances, from the
  *                 response
  */
 class Mapper
@@ -24,16 +24,16 @@ class Mapper
 
     public function handle($data, Closure $next)
     {
-        $symbols = $data->response->json()['symbols'];
+        $tokens = $data->response->json()['symbols'];
 
-        foreach ($symbols as $symbol) {
-            $symbol = (object) $symbol;
+        foreach ($tokens as $token) {
+            $token = (object) $token;
 
-            if (! Symbol::firstWhere('canonical', $symbol->symbol)) {
-                $model = new Symbol();
-                $model->canonical = strtoupper($symbol->symbol);
-                $model->base_asset = $symbol->baseAsset;
-                $model->quote_asset = $symbol->quoteAsset;
+            if (! Token::firstWhere('canonical', $token->symbol)) {
+                $model = new Token();
+                $model->canonical = strtoupper($token->symbol);
+                $model->base_asset = $token->baseAsset;
+                $model->quote_asset = $token->quoteAsset;
                 $model->save();
             }
         }
