@@ -33,7 +33,7 @@ class ThrottleCheck
             }
 
             // Cool down crawler.
-            if (response->header('Retry-After') !== null) {
+            if ($response->header('Retry-After') !== null) {
                 $retryAfter = now()->addSeconds($response->header('Retry-After'));
                 BinanceCrawler::firstWhere('canonical', 'binance')
                               ->update(['cooldown_until', $retryAfter]);
